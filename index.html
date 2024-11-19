@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <style>
+        /* Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Base styles with proper vertical rhythm */
+        html {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            max-width: 65ch;
+            margin: 0 auto;
+            padding: 2rem;
+            color: rgb(17, 24, 39);
+            background: white;
+        }
+
+        /* Typography scale using modular scale (1.25 ratio) */
+        h1 {
+            font-size: 2.25rem;
+            line-height: 1.25;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-top: 0;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            line-height: 1.3333;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            line-height: 1.375;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        p, ul, ol {
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Link styles */
+        a {
+            color: rgb(37, 99, 235);
+            text-decoration: underline;
+            text-decoration-thickness: 0.1em;
+            text-underline-offset: 0.2em;
+        }
+
+        a:hover {
+            color: rgb(29, 78, 216);
+        }
+
+        /* Code blocks */
+        pre {
+            background: rgb(243, 244, 246);
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            line-height: 1.7142857;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 1.625rem;
+        }
+
+        li {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Blog post specific styles */
+        .post {
+            margin-bottom: 5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgb(229, 231, 235);
+        }
+
+        .post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .post-date {
+            color: rgb(107, 114, 128);
+            font-size: 0.875rem;
+            margin-top: -1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .post-title {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .post-title:hover {
+            color: rgb(17, 24, 39);
+            text-decoration: underline;
+            text-decoration-thickness: 0.1em;
+            text-underline-offset: 0.2em;
+        }
+
+        /* Navigation */
+        nav {
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgb(229, 231, 235);
+        }
+
+        nav h1 {
+            margin-bottom: 0;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid rgb(229, 231, 235);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: rgb(55, 65, 81);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgb(229, 231, 235);
+        }
+
+        th {
+            font-weight: 600;
+            background: rgb(249, 250, 251);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>My Blog</h1>
+    </nav>
+
+    <main id="content">
+        Loading...
+    </main>
+
+    <script>
+        // Parse a filename like "2024-11-19-My_First_Post.md"
+        function parsePostFilename(filename) {
+            const match = filename.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
+            if (!match) return null;
+
+            const [, date, titleWithUnderscores] = match;
+            const title = titleWithUnderscores
+                .replace(/_/g, ' ')  // Replace underscores with spaces
+                .replace(/\b\w/g, c => c.toUpperCase());  // Capitalize first letter of each word
+
+            return {
+                filename,
+                date,
+                title,
+                url: `posts/${filename}`
+            };
+        }
+
+        async function fetchPostList() {
+            try {
+                // Fetch the list of files from posts/index.json
+                const response = await fetch('posts/index.json');
+                const files = await response.json();
+                
+                // Parse each filename and filter out any invalid ones
+                return files
+                    .map(parsePostFilename)
+                    .filter(post => post !== null)
+                    .sort((a, b) => b.date.localeCompare(a.date)); // Sort by date, newest first
+            } catch (error) {
+                console.error('Error fetching post list:', error);
+                return [];
+            }
+        }
+
+        async function loadPosts() {
+            const content = document.getElementById('content');
+            content.innerHTML = ''; // Clear loading message
+            
+            const posts = await fetchPostList();
+            
+            if (posts.length === 0) {
+                content.innerHTML = '<p>No posts found. Create a file like "2024-11-19-My_First_Post.md" in the posts directory to get started.</p>';
+                return;
+            }
+
+            for (const post of posts) {
+                try {
+                    const response = await fetch(post.url);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const markdown = await response.text();
+                    const html = marked.parse(markdown);
+                    
+                    const article = document.createElement('article');
+                    article.className = 'post';
+                    article.innerHTML = `
+                        <h1><a href="#${post.filename}" class="post-title">${post.title}</a></h1>
+                        <div class="post-date">${post.date}</div>
+                        ${html}
+                    `;
+                    
+                    content.appendChild(article);
+                } catch (error) {
+                    console.error(`Error loading ${post.url}:`, error);
+                    const errorArticle = document.createElement('article');
+                    errorArticle.className = 'post';
+                    errorArticle.innerHTML = `
+                        <h2>${post.title}</h2>
+                        <div class="post-date">${post.date}</div>
+                        <p>Error loading post.</p>
+                    `;
+                    content.appendChild(errorArticle);
+                }
+            }
+        }
+
+        // Handle direct links to posts
+        window.addEventListener('hashchange', loadPosts);
+        loadPosts();
+    </script>
+</body>
+</html>
